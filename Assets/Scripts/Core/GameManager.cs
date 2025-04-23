@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class GameManager 
+public class GameManager
 {
     public enum GameState
     {
@@ -14,10 +14,14 @@ public class GameManager
         GAMEOVER
     }
     public GameState state;
-
+    public int damageDealt;
+    public int damageReceived;
+    public int timeSpent;
     public int countdown;
     private static GameManager theInstance;
-    public static GameManager Instance {  get
+    public static GameManager Instance
+    {
+        get
         {
             if (theInstance == null)
                 theInstance = new GameManager();
@@ -26,7 +30,8 @@ public class GameManager
     }
 
     public GameObject player;
-    
+
+
     public ProjectileManager projectileManager;
     public SpellIconManager spellIconManager;
     public EnemySpriteManager enemySpriteManager;
@@ -49,11 +54,21 @@ public class GameManager
     {
         if (enemies == null || enemies.Count == 0) return null;
         if (enemies.Count == 1) return enemies[0];
-        return enemies.Aggregate((a,b) => (a.transform.position - point).sqrMagnitude < (b.transform.position - point).sqrMagnitude ? a : b);
+        return enemies.Aggregate((a, b) => (a.transform.position - point).sqrMagnitude < (b.transform.position - point).sqrMagnitude ? a : b);
     }
 
     private GameManager()
     {
+        damageDealt = 0;
+        damageReceived = 0;
+        timeSpent = 0;
         enemies = new List<GameObject>();
+    }
+    public void resetGame()
+    {
+        damageDealt = 0;
+        damageReceived = 0;
+        timeSpent = 0;
+        enemies.Clear();
     }
 }

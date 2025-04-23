@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
         spellcaster = new SpellCaster(125, 8, Hittable.Team.PLAYER);
         StartCoroutine(spellcaster.ManaRegeneration());
 
-        hp = new Hittable(1, Hittable.Team.PLAYER, gameObject);
+        hp = new Hittable(100, Hittable.Team.PLAYER, gameObject);
         hp.OnDeath += Die;
         hp.team = Hittable.Team.PLAYER;
 

@@ -564,7 +564,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rewardUI: {fileID: 1709288111}
-  buttonText: {fileID: 0}
+  buttonText: {fileID: 254615550}
 --- !u!4 &220180078
 Transform:
   m_ObjectHideFlags: 0

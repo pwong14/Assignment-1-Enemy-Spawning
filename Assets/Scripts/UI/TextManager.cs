@@ -6,7 +6,7 @@ public class PlayerStatTextManager : MonoBehaviour
     public static PlayerStatTextManager Instance; 
 
     private TextMeshProUGUI _text;
-    private string _rewardMsg = string.Empty;      
+    private string _rewardMsg = string.Empty;     
 
     private void Awake()
     {
@@ -16,6 +16,7 @@ public class PlayerStatTextManager : MonoBehaviour
 
     private void Start() => _text.text = string.Empty;
 
+    /// Called by <see cref="RewardScreenManager"/> right after the player accepts a reward.
     public void SetRewardMessage(string msg) => _rewardMsg = msg;
 
     private void Update()
@@ -30,7 +31,7 @@ public class PlayerStatTextManager : MonoBehaviour
                     $"DAMAGE RECEIVED: {GameManager.Instance.damageReceived}";
 
                 if (!string.IsNullOrEmpty(_rewardMsg))
-                    _text.text += $"\n{_rewardMsg}";
+                    _text.text += $"\n{_rewardMsg}";                // ★ new
                 break;
 
             default:

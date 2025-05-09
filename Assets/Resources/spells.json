@@ -29,6 +29,15 @@
        "projectile": {"trajectory": "straight", "speed": "12", "sprite": 0},
        "secondary_projectile": {"trajectory": "straight", "speed": "20", "lifetime": "0.1", "sprite": 0}
    },
+   "arcane_chain": {
+       "name": "Arcane Chain",
+       "description": "Chains to nearby enemies after each hit.",
+       "icon": 3,
+       "damage": { "amount": "18 power 5 / +", "type": "arcane" },
+       "mana_cost": "15",
+       "cooldown": "2",
+       "projectile": { "trajectory": "straight", "speed": "10", "sprite": 0 }
+   },
    "arcane_spray":  {
        "name": "Arcane Spray",
        "description": "A large number of short-range bolts in a cone.",
@@ -76,6 +85,13 @@
        "damage_multiplier": "0.75",
        "mana_adder": "10",
        "projectile_trajectory": "homing"
+   },
+   "piercing": {
+       "name": "piercing",
+       "description": "Passes through one extra enemy" 
+   },
+   "cheap_cast": {
+       "name": "cheap cast",
+       "description": "Reduces mana cost by 50%."
    }
-
 }

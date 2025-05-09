@@ -14,22 +14,22 @@ public class Spell
         this.owner = owner;
     }
 
-    public string GetName()
+    public virtual string GetName()
     {
         return "Bolt";
     }
 
-    public int GetManaCost()
+    public virtual int GetManaCost()
     {
         return 10;
     }
 
-    public int GetDamage()
+    public virtual int GetDamage()
     {
         return 100;
     }
 
-    public float GetCooldown()
+    public virtual float GetCooldown()
     {
         return 0.75f;
     }
@@ -37,6 +37,11 @@ public class Spell
     public virtual int GetIcon()
     {
         return 0;
+    }
+
+    public virtual float GetSpeed()
+    {
+        return 10f; // fallback default
     }
 
     public bool IsReady()

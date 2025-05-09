@@ -27,6 +27,8 @@ public class EnemySpawner : MonoBehaviour
     private int currentWave = 1;
     private string current_level;
 
+    public int GetCurrentWave() => currentWave;
+
     #region MonoBehaviour
     private void Start()
     {
@@ -60,10 +62,6 @@ public class EnemySpawner : MonoBehaviour
         StartCoroutine(SpawnWave());
     }
 
-    /// <summary>
-    /// Evaluates a Reverse Polish Notation (RPN) expression and returns the result as an integer.
-    /// Supported tokens: +, -, *, /, %, "wave" (current wave number), "base" (enemy base HP).
-    /// </summary>
     public int EvaluateRpn(string expression, int enemyBaseHp = 0)
     {
         if (string.IsNullOrWhiteSpace(expression)) return 0;
@@ -71,7 +69,6 @@ public class EnemySpawner : MonoBehaviour
         static int DivSafe(int a, int b) => b == 0 ? 0 : a / b;
         static int ModSafe(int a, int b) => b == 0 ? 0 : a % b;
 
-        // Map operator strings to their corresponding integer operations.
         var ops = new Dictionary<string, System.Func<int, int, int>>(5)
         {
             ["+"] = (a, b) => a + b,
@@ -113,7 +110,7 @@ public class EnemySpawner : MonoBehaviour
     #endregion
 
     #region Coroutines
-    private IEnumerator SpawnWave()
+    public IEnumerator SpawnWave()
     {
         GameManager.Instance.state = GameManager.GameState.COUNTDOWN;
         GameManager.Instance.countdown = 3;
@@ -134,7 +131,6 @@ public class EnemySpawner : MonoBehaviour
             StartCoroutine(ManageWave(spawn));
         }
 
-        // Wait until all enemies are defeated
         yield return new WaitWhile(() => GameManager.Instance.enemy_count > 0);
 
         currentWave++;
@@ -145,6 +141,7 @@ public class EnemySpawner : MonoBehaviour
         else if (GameManager.Instance.state is not (GameManager.GameState.GAMEOVER or GameManager.GameState.PREGAME))
         {
             GameManager.Instance.state = GameManager.GameState.WAVEEND;
+            RewardScreenManager.Instance.ShowReward();
         }
     }
 
@@ -204,7 +201,7 @@ public class EnemySpawner : MonoBehaviour
                 GameManager.Instance.timeSpent += 1;
                 yield return new WaitForSeconds(1f);
             }
-            else // Pause timer during inter‑wave downtime
+            else
             {
                 yield return new WaitWhile(() => GameManager.Instance.state == GameManager.GameState.WAVEEND);
             }

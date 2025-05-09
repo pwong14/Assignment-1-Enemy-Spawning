@@ -30,6 +30,7 @@ public class GameManager
     }
 
     public GameObject player;
+    public int currentWave = 1;
 
 
     public ProjectileManager projectileManager;
@@ -48,6 +49,21 @@ public class GameManager
     public void RemoveEnemy(GameObject enemy)
     {
         enemies.Remove(enemy);
+    }
+
+    public void NextWave()
+    {
+        state = GameState.COUNTDOWN;
+
+        EnemySpawner spawner = UnityEngine.Object.FindAnyObjectByType<EnemySpawner>();
+        if (spawner != null)
+        {
+            CoroutineManager.Instance.Run(spawner.SpawnWave());
+        }
+        else
+        {
+            Debug.LogError("Could not find EnemySpawner.");
+        }
     }
 
     public GameObject GetClosestEnemy(Vector3 point)

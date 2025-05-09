@@ -47,4 +47,8 @@ public class Hittable
         this.max_hp = max_hp;
         this.hp = Mathf.RoundToInt(perc * max_hp);
     }
+    public GameObject GetGameObject()
+    {
+        return owner;
+    }
 }

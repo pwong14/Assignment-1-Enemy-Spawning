@@ -3,11 +3,20 @@ using TMPro;
 
 public class PlayerStatTextManager : MonoBehaviour
 {
-    private TextMeshProUGUI _text;
+    public static PlayerStatTextManager Instance; 
 
-    private void Awake() => _text = GetComponent<TextMeshProUGUI>();
+    private TextMeshProUGUI _text;
+    private string _rewardMsg = string.Empty;      
+
+    private void Awake()
+    {
+        Instance = this;                         
+        _text = GetComponent<TextMeshProUGUI>();
+    }
 
     private void Start() => _text.text = string.Empty;
+
+    public void SetRewardMessage(string msg) => _rewardMsg = msg;
 
     private void Update()
     {
@@ -19,9 +28,15 @@ public class PlayerStatTextManager : MonoBehaviour
                     $"TOTAL TIME: {GameManager.Instance.timeSpent}\n" +
                     $"DAMAGE DEALT: {GameManager.Instance.damageDealt}\n" +
                     $"DAMAGE RECEIVED: {GameManager.Instance.damageReceived}";
+
+                if (!string.IsNullOrEmpty(_rewardMsg))
+                    _text.text += $"\n{_rewardMsg}";
                 break;
+
             default:
+                // Hide all text between waves
                 if (!string.IsNullOrEmpty(_text.text)) _text.text = string.Empty;
+                _rewardMsg = string.Empty;                          // reset so next wave starts clean
                 break;
         }
     }

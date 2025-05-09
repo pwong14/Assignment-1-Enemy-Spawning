@@ -39,29 +39,37 @@ public class RewardScreenManager : MonoBehaviour
         }
     }
 
-    public void ShowReward()
-    {
-        rewardUI.SetActive(true);
-        Debug.Log("Reward screen activated");
+   public void ShowReward()
+{
+    rewardUI.SetActive(true);
+    Debug.Log("Reward screen activated");
 
-        // Generate a new random spell as a reward
-        rewardSpell = new SpellBuilder().Build(player.spellcaster);
+    // Generate a new random spell as a reward
+    rewardSpell = new SpellBuilder().Build(player.spellcaster);
 
-        // Log what the player is being offered
-        Debug.Log($"New spell reward: {rewardSpell.GetName()} (Mana: {rewardSpell.GetManaCost()}, Damage: {rewardSpell.GetDamage()})");
-    }
+    Debug.Log($"New spell reward: {rewardSpell.GetName()} (Mana: {rewardSpell.GetManaCost()}, Damage: {rewardSpell.GetDamage()})");
 
-    public void AcceptReward()
-    {
-        if (rewardSpell == null) return;
+    // ← player-stats panel is visible right now, so push the message now
+    PlayerStatTextManager.Instance?.SetRewardMessage(
+        $"NEW SPELL REWARD: {rewardSpell.GetName()}");
+}
 
-        // Replace spell in slot 0
-        player.spellcaster.spell = rewardSpell;
-        spellUIContainer.spellUIs[0].GetComponent<SpellUI>().SetSpell(rewardSpell);
 
-        Debug.Log($"Equipped new reward spell: {rewardSpell.GetName()}");
+   public void AcceptReward()
+{
+    if (rewardSpell == null) return;
 
-        rewardUI.SetActive(false);
-        GameManager.Instance.NextWave();
-    }
+    // Replace spell in slot 0
+    player.spellcaster.spell = rewardSpell;
+    spellUIContainer.spellUIs[0].GetComponent<SpellUI>().SetSpell(rewardSpell);
+
+    Debug.Log($"Equipped new reward spell: {rewardSpell.GetName()}");
+
+    // ★ tell the stat panel about it
+    PlayerStatTextManager.Instance?.SetRewardMessage($"EQUIPPED SPELL: {rewardSpell.GetName()}");
+
+    rewardUI.SetActive(false);
+    GameManager.Instance.NextWave();
+}
+
 }

@@ -1,9 +1,10 @@
-using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
-public class GameManager
+public class GameManager : MonoBehaviour
 {
     public enum GameState
     {
@@ -18,19 +19,23 @@ public class GameManager
     public int damageReceived;
     public int timeSpent;
     public int countdown;
-    private static GameManager theInstance;
-    public static GameManager Instance
+    public static GameManager Instance;
+    private void Awake()
     {
-        get
+        if (Instance != null && Instance != this)
         {
-            if (theInstance == null)
-                theInstance = new GameManager();
-            return theInstance;
+            Destroy(gameObject);
+            return;
         }
+        Instance= this;
+        DontDestroyOnLoad(gameObject);
+        enemies = new List<GameObject > ();
     }
 
     public GameObject player;
     public int currentWave = 1;
+    public string selectedClass = "mage"; //default class
+    public PlayerClass currentClass;
 
 
     public ProjectileManager projectileManager;
@@ -86,5 +91,10 @@ public class GameManager
         damageReceived = 0;
         timeSpent = 0;
         enemies.Clear();
+    }
+    public void SetClass(string className)
+    {
+        selectedClass = className;
+        currentClass = ClassManager.Classes[className];
     }
 }

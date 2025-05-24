@@ -73,7 +73,7 @@ public class SpellBuilder
         if (Random.value < 0.5f && spellDefinitions.ContainsKey("splitter"))
         {
             JObject splitDef = spellDefinitions["splitter"];
-            float angle = float.Parse(splitDef["angle"]?.ToString() ?? "10");
+            float angle = EvalFloat(splitDef["angle"]?.ToString(), owner);
             finalSpell = new SplitterSpell(owner, finalSpell, angle);
             Debug.Log("→ Applied SplitterSpell");
         }
@@ -82,7 +82,7 @@ public class SpellBuilder
         if (Random.value < 0.25f && spellDefinitions.ContainsKey("doubler"))
         {
             JObject doubleDef = spellDefinitions["doubler"];
-            float delay = float.Parse(doubleDef["delay"]?.ToString() ?? "0.5");
+            float delay = EvalFloat(doubleDef["delay"]?.ToString(), owner);
             finalSpell = new DoublerSpell(owner, finalSpell, delay);
             Debug.Log("→ Applied DoublerSpell");
         }
@@ -117,19 +117,19 @@ public class SpellBuilder
             ModifierSpell mod = new ModifierSpell(owner, finalSpell);
 
             if (modDef["damage_multiplier"] != null)
-                mod.SetDamageMultiplier(float.Parse(modDef["damage_multiplier"].ToString()));
+                mod.SetDamageMultiplier(EvalFloat(modDef["damage_multiplier"].ToString(), owner));
 
             if (modDef["mana_multiplier"] != null)
-                mod.SetManaMultiplier(float.Parse(modDef["mana_multiplier"].ToString()));
+                mod.SetManaMultiplier(EvalFloat(modDef["mana_multiplier"].ToString(), owner));
 
             if (modDef["cooldown_multiplier"] != null)
-                mod.SetCooldownMultiplier(float.Parse(modDef["cooldown_multiplier"].ToString()));
+                mod.SetCooldownMultiplier(EvalFloat(modDef["cooldown_multiplier"].ToString(), owner));
 
             if (modDef["speed_multiplier"] != null)
-                mod.SetSpeedMultiplier(float.Parse(modDef["speed_multiplier"].ToString()));
+                mod.SetSpeedMultiplier(EvalFloat(modDef["speed_multiplier"].ToString(), owner));
 
             if (modDef["mana_adder"] != null)
-                mod.SetManaAdder(float.Parse(modDef["mana_adder"].ToString()));
+                mod.SetManaAdder(EvalFloat(modDef["mana_adder"].ToString(), owner));
 
             if (modDef["projectile_trajectory"] != null)
                 mod.SetOverrideTrajectory(modDef["projectile_trajectory"].ToString());
@@ -139,5 +139,15 @@ public class SpellBuilder
         }
         Debug.Log($"Built spell: {finalSpell.GetName()} (damage: {finalSpell.GetDamage()}, mana: {finalSpell.GetManaCost()})");
         return finalSpell;
+    }
+
+    private float EvalFloat(string expr, SpellCaster owner)
+    {
+        if (string.IsNullOrEmpty(expr)) return 0f;
+        return RPNEvaluator.Evaluate(expr, new Dictionary<string, float>
+        {
+            { "power", owner.spellPower },
+            { "wave", GameManager.Instance.currentWave }
+        });
     }
 }

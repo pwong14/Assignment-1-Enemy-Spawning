@@ -11,12 +11,20 @@ public class PlayerController : MonoBehaviour
     public HealthBar healthui;
     public ManaBar manaui;
 
+    public List<Relic> relics = new List<Relic>();
+
     public SpellCaster spellcaster;
     public SpellUI spellui;
 
     public int speed;
 
     public Unit unit;
+
+    public void AddRelic(Relic relic)
+    {
+        relics.Add(relic);
+        relic.Register(this);
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -34,10 +42,16 @@ public class PlayerController : MonoBehaviour
         hp.OnDeath += Die;
         hp.team = Hittable.Team.PLAYER;
 
+        unit.OnMove += dist => EventBus.Instance.PlayerMoved(dist);
+
         // tell UI elements what to show
         healthui.SetHealth(hp);
         manaui.SetSpellCaster(spellcaster);
         spellui.SetSpell(spellcaster.spell);
+
+        // For demonstration, give player the Green Gem relic by default
+        Relic gem = RelicManager.BuildRelic("Green Gem");
+        if (gem != null) AddRelic(gem);
     }
 
     // Update is called once per frame

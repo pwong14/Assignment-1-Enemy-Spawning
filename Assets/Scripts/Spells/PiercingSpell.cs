@@ -14,9 +14,16 @@ public class PiercingSpell : ModifierSpell
 
         int pierceCount = 1;
 
+        int sprite = 0;
+        string trajectory = "straight";
+        if (inner is BaseSpell bs)
+        {
+            sprite = bs.projectileSprite;
+            trajectory = bs.GetTrajectory();
+        }
         GameManager.Instance.projectileManager.CreateProjectile(
-            inner.GetIcon(),
-            inner is BaseSpell bs ? bs.GetTrajectory() : "straight",
+            sprite,
+            trajectory,
             where,
             direction,
             speed,

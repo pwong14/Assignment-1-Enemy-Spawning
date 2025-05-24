@@ -112,6 +112,18 @@
     <Compile Include="Assets\Scripts\Movement\Unit.cs" />
     <Compile Include="Assets\Scripts\Levels\Spawn.cs" />
     <Compile Include="Assets\Scripts\Spells\ProjectileManager.cs" />
+    <Compile Include="Assets\Scripts\Relics\Relic.cs" />
+    <Compile Include="Assets\Scripts\Relics\RelicTrigger.cs" />
+    <Compile Include="Assets\Scripts\Relics\RelicEffect.cs" />
+    <Compile Include="Assets\Scripts\Relics\TakeDamageTrigger.cs" />
+    <Compile Include="Assets\Scripts\Relics\StandStillTrigger.cs" />
+    <Compile Include="Assets\Scripts\Relics\KillTrigger.cs" />
+    <Compile Include="Assets\Scripts\Relics\DealDamageTrigger.cs" />
+    <Compile Include="Assets\Scripts\Relics\DistanceMovedTrigger.cs" />
+    <Compile Include="Assets\Scripts\Relics\GainManaEffect.cs" />
+    <Compile Include="Assets\Scripts\Relics\GainSpellpowerEffect.cs" />
+    <Compile Include="Assets\Scripts\Relics\HealEffect.cs" />
+    <Compile Include="Assets\Scripts\Relics\RelicManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

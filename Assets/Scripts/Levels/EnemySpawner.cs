@@ -44,6 +44,9 @@ public class EnemySpawner : MonoBehaviour
         level_selector.gameObject.SetActive(false);
         current_level = levelName;
 
+        currentWave = 1;
+        GameManager.Instance.currentWave = 1;
+
         GameManager.Instance.player.GetComponent<PlayerController>().StartLevel();
         StartCoroutine(SpawnWave());
     }
@@ -122,6 +125,7 @@ public class EnemySpawner : MonoBehaviour
         }
 
         GameManager.Instance.state = GameManager.GameState.INWAVE;
+        GameManager.Instance.currentWave = currentWave;
 
         Level level = levels[current_level];
         Debug.Log($"Spawning wave {currentWave} from level {current_level}");

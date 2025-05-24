@@ -19,15 +19,32 @@ public class GameManager : MonoBehaviour
     public int damageReceived;
     public int timeSpent;
     public int countdown;
-    public static GameManager Instance;
+    private static GameManager _instance;
+    public static GameManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<GameManager>();
+                if (_instance == null)
+                {
+                    GameObject obj = new GameObject("GameManager");
+                    _instance = obj.AddComponent<GameManager>();
+                }
+            }
+            return _instance;
+        }
+    }
+
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (_instance != null && _instance != this)
         {
             Destroy(gameObject);
             return;
         }
-        Instance= this;
+        _instance = this;
         DontDestroyOnLoad(gameObject);
         enemies = new List<GameObject > ();
     }
@@ -90,6 +107,7 @@ public class GameManager : MonoBehaviour
         damageDealt = 0;
         damageReceived = 0;
         timeSpent = 0;
+        currentWave = 1;
         enemies.Clear();
     }
     public void SetClass(string className)

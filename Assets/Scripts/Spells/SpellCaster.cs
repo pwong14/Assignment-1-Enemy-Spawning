@@ -37,6 +37,7 @@ public class SpellCaster
         {
             mana -= spell.GetManaCost();
             yield return spell.Cast(where, target, team);
+            EventBus.Instance.SpellWasCast();
         }
         yield break;
     }
